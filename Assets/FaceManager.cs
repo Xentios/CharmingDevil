@@ -12,7 +12,10 @@ public class FaceManager : MonoBehaviour
     private List<Camera> cameras;
 
 
-    private IEnumerator Start()
+    [SerializeField]
+    private List<FaceShaper> shapedFaces;
+
+    private IEnumerator Start2()
     {
         while (true)
         {
@@ -24,6 +27,23 @@ public class FaceManager : MonoBehaviour
             //}
             SetAllFaces(Random.Range(0, 7), Random.Range(0, 100f));
         }
+    }
+
+
+     [ContextMenu ("MakeAFace")]
+    public void ShapeRandomSetFace()
+    {
+        SetAllFacesBasedOnSO(shapedFaces[Random.Range(0,shapedFaces.Count)]);
+    }
+
+     public void SetAllFacesBasedOnSO(FaceShaper faceToMake)
+
+    {
+        for (int i = 0; i < faceToMake.blendShapes.Length; i++)
+        {
+            SetAllFaces(i, faceToMake.blendShapes[i]);
+        }
+
     }
 
     private void SetAllFaces(int index,float value)

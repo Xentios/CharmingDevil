@@ -7,18 +7,27 @@ public class CameraSpinner : MonoBehaviour
 {
 
     [SerializeField]
+    private Camera camera;
+    [SerializeField]
     private AnimationCurve spinEase;
     // Start is called before the first frame update
     void Start()
     {
         SpinCamera();
+        StartCoroutine(RenderCamera());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator RenderCamera()
     {
-        
+        while (true)
+        {
+            camera.Render();
+            
+            yield return new WaitForSeconds(0.03f);
+        }
     }
+   
+      
 
     [ContextMenu ("SpinCam")]
     public void SpinCamera()
