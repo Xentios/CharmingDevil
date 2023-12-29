@@ -13,7 +13,7 @@ public class CameraSpinner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SpinCamera();
+        //SpinCamera();
         StartCoroutine(RenderCamera());
     }
 

@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum FacePos {  Left,Middle,Right};
 
 public class FaceManager : MonoBehaviour
 {
     [SerializeField]
-    private List<SkinnedMeshRenderer> faces;
+    private List<SkinnedMeshRenderer> visualFaces;
 
     [SerializeField]
-    private List<Camera> cameras;
+    private List<CameraSpinner> cameras;
 
 
     [SerializeField]
@@ -50,21 +51,53 @@ public class FaceManager : MonoBehaviour
     {
         if(index==1 ||index > 4)
         {
-            foreach (var face in faces)
+            foreach (var face in visualFaces)
             {
                 face.SetBlendShapeWeight(index, value);
             }
         }
         else
         {
-            foreach (var face in faces)
+            foreach (var face in visualFaces)
             {
-                if (face == faces[1]) continue;
+                if (face == visualFaces[1]) continue;
                 if (Random.value > 0.5) continue;
                 face.SetBlendShapeWeight(index, value);
             }
         }
       
+    }
+
+
+    public void SetFacesOnebyOne()
+    {
+        StartCoroutine(SetFacesDelayed());
+    }
+
+    IEnumerator SetFacesDelayed()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            SetFace((FacePos)i, shapedFaces[Random.Range(0, shapedFaces.Count)]);
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
+
+
+    private void SetFace(FacePos facePos, FaceShaper faceToMake)
+    {
+        SpinCamera(facePos);
+        for (int i = 0; i < faceToMake.blendShapes.Length; i++)
+        {
+            visualFaces[(int) facePos].SetBlendShapeWeight(i, faceToMake.blendShapes[i]);
+        }
+
+    }
+
+    private void SpinCamera(FacePos facePos)
+    {
+        cameras[(int) facePos].SpinCamera();
     }
 
 }
