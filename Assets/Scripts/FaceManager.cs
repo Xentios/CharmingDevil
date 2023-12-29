@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.Events;
 
 public enum FacePos {  Left,Middle,Right};
 
@@ -8,6 +10,8 @@ public class FaceManager : MonoBehaviour
 {
     [SerializeField]
     private List<SkinnedMeshRenderer> visualFaces;
+    [SerializeField]
+    private List<TextMeshProUGUI> faceNames;
 
     [SerializeField]
     private List<CameraSpinner> cameras;
@@ -16,6 +20,11 @@ public class FaceManager : MonoBehaviour
     [SerializeField]
     private List<FaceShaper> shapedFaces;
 
+    [SerializeField]
+    private List<bool> lockedFaces;
+
+
+    public UnityEvent onSpinEnd;
     private IEnumerator Start2()
     {
         while (true)
@@ -78,6 +87,7 @@ public class FaceManager : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
+            if (lockedFaces[i] == true) continue;
             SetFace((FacePos)i, shapedFaces[Random.Range(0, shapedFaces.Count)]);
             yield return new WaitForSeconds(0.3f);
         }
@@ -88,6 +98,7 @@ public class FaceManager : MonoBehaviour
     private void SetFace(FacePos facePos, FaceShaper faceToMake)
     {
         SpinCamera(facePos);
+        EditText(facePos, faceToMake.name);
         for (int i = 0; i < faceToMake.blendShapes.Length; i++)
         {
             visualFaces[(int) facePos].SetBlendShapeWeight(i, faceToMake.blendShapes[i]);
@@ -95,9 +106,21 @@ public class FaceManager : MonoBehaviour
 
     }
 
+    private void EditText(FacePos facePos, string name)
+    {
+        faceNames[(int) facePos].text = name;
+    }
+
     private void SpinCamera(FacePos facePos)
     {
+        //cameras[(int) facePos].onSpinEnd.AddListener()
         cameras[(int) facePos].SpinCamera();
+    }
+
+
+    public void LockFace(int index)
+    {
+        lockedFaces[index] = !lockedFaces[index];
     }
 
 }

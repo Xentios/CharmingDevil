@@ -11,7 +11,7 @@ public class FaceMaker : MonoBehaviour
 
     [SerializeField]
     SkinnedMeshRenderer skinnedMeshRenderer;
-
+#if UNITY_EDITOR
     [ContextMenu ("Save")]
     public void SaveFace()
     {
@@ -37,6 +37,7 @@ public class FaceMaker : MonoBehaviour
 
         // Refresh the asset database to ensure changes are immediately visible
         AssetDatabase.Refresh();
+
     }
  
 
@@ -51,4 +52,6 @@ public class FaceMaker : MonoBehaviour
     {
         throw new NotImplementedException();
     }
+
+#endif
 }
