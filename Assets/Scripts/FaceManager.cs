@@ -106,9 +106,11 @@ public class FaceManager : MonoBehaviour
     public void SetFacesOnebyOne()
     {
         var multiplier = 1;
+        var secondMultipler = 0;
         foreach (var lockedValue in lockedFaces)
         {
-            multiplier *= lockedValue ? 3 : 1;
+            multiplier *= lockedValue ? (2+ secondMultipler) : 1;
+            secondMultipler += 1;
         }
 
         StreamerPoints -= 10* multiplier;

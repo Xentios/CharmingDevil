@@ -81,11 +81,11 @@ public class DesireManager : MonoBehaviour
         }
         else if(face1==face2 || face1==face3){
             index = GetIndexOfDesire(face1);
-            result = 300;
+            result = 400;
         }
         else if(face2==face3){
             index = GetIndexOfDesire(face2);
-            result = 300;
+            result = 400;
         }
         else
         {
@@ -106,10 +106,11 @@ public class DesireManager : MonoBehaviour
             faceManager.Win();
         }
 
-        if (panelRoot.transform.childCount < 5) return;
+        if (panelRoot.transform.childCount < 6) return;
+
         for (int i = 0; i < desiresInstanced.Length; i++)
         {
-            ReduceADesire(i, Random.Range(0, 5));
+            ReduceADesire(i, Random.Range(0, 2));
         }
     }
 
