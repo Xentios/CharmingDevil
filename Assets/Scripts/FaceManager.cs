@@ -8,6 +8,11 @@ public enum FacePos {  Left,Middle,Right};
 
 public class FaceManager : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject gameWinCanvas;
+
+    [SerializeField]
+    private GameObject gameOverCanvas;
 
     [SerializeField]
     private DesireManager desireManager;
@@ -32,6 +37,17 @@ public class FaceManager : MonoBehaviour
     [SerializeField]
     private List<bool> lockedFaces;
 
+
+    [SerializeField]
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip audioClip;
+
+    [SerializeField]
+    private AudioClip lose;
+    [SerializeField]
+    private AudioSource music;
 
     public UnityEvent onSpinEnd;
     private IEnumerator Start2()
@@ -98,10 +114,21 @@ public class FaceManager : MonoBehaviour
         StreamerPoints -= 10* multiplier;
         if(StreamerPoints<0)
         {
-            //TODO GAMEOVER
+            music.Stop();
+            audioSource.Stop();
+            audioSource.pitch = 0.5f;
+            audioSource.PlayOneShot(lose);
+            gameOverCanvas.SetActive(true);
         }
         scoreTextField.text = ""+StreamerPoints;
         StartCoroutine(SetFacesDelayed());
+    }
+
+    internal void Win()
+    {
+        music.Stop();
+        audioSource.Stop();      
+        gameWinCanvas.SetActive(true);
     }
 
     IEnumerator SetFacesDelayed()
@@ -137,6 +164,7 @@ public class FaceManager : MonoBehaviour
     private void SpinCamera(FacePos facePos)
     {
         //cameras[(int) facePos].onSpinEnd.AddListener()
+        audioSource.PlayOneShot(audioClip);
         cameras[(int) facePos].SpinCamera();
     }
 

@@ -100,6 +100,11 @@ public class DesireManager : MonoBehaviour
         ReduceADesire(index, (int) (result/10));
 
         faceManager.StreamerPoints += result;
+
+        if (faceManager.StreamerPoints > 1500)
+        {
+            faceManager.Win();
+        }
     }
 
 
