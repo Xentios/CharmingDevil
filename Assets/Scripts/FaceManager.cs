@@ -8,6 +8,15 @@ public enum FacePos {  Left,Middle,Right};
 
 public class FaceManager : MonoBehaviour
 {
+
+    [SerializeField]
+    private DesireManager desireManager;
+
+    public int StreamerPoints = 1000;
+
+    [SerializeField]
+    private TextMeshProUGUI scoreTextField;
+
     [SerializeField]
     private List<SkinnedMeshRenderer> visualFaces;
     [SerializeField]
@@ -80,6 +89,18 @@ public class FaceManager : MonoBehaviour
 
     public void SetFacesOnebyOne()
     {
+        var multiplier = 1;
+        foreach (var lockedValue in lockedFaces)
+        {
+            multiplier *= lockedValue ? 3 : 1;
+        }
+
+        StreamerPoints -= 10* multiplier;
+        if(StreamerPoints<0)
+        {
+            //TODO GAMEOVER
+        }
+        scoreTextField.text = ""+StreamerPoints;
         StartCoroutine(SetFacesDelayed());
     }
 
@@ -91,6 +112,8 @@ public class FaceManager : MonoBehaviour
             SetFace((FacePos)i, shapedFaces[Random.Range(0, shapedFaces.Count)]);
             yield return new WaitForSeconds(0.3f);
         }
+
+        desireManager.UpdateDesiresNegative(faceNames[0].text, faceNames[1].text,faceNames[2].text);
     }
 
 
