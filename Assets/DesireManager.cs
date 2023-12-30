@@ -17,7 +17,7 @@ public class DesireManager : MonoBehaviour
     private List<FaceShaper> shapedFaces;
 
 
-    private int[] desirePersentange;
+    public int[] desirePersentange;
     private GameObject[] desiresInstanced;
 
     private void Awake()
@@ -105,6 +105,12 @@ public class DesireManager : MonoBehaviour
         {
             faceManager.Win();
         }
+
+        if (panelRoot.transform.childCount < 5) return;
+        for (int i = 0; i < desiresInstanced.Length; i++)
+        {
+            ReduceADesire(i, Random.Range(0, 5));
+        }
     }
 
 
@@ -113,7 +119,7 @@ public class DesireManager : MonoBehaviour
         if (result < 0) return;
         if (desiresInstanced[index] == null) return;
 
-        desirePersentange[index] = Mathf.Max(0, desirePersentange[index] - result);
+        desirePersentange[index] = Mathf.Max(0, (desirePersentange[index] - result)/2);
 
         UpdateVisual(index);
 
